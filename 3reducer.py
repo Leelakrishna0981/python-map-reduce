@@ -1,27 +1,34 @@
 s = open("02.txt","r")
 r = open("03.txt", "w")
 
-thisKey = ""
-thisValue = 0.0
+counter = 0
+thiskey = ""
+thisvalue = 0
+
 
 for line in s:
-  data = line.strip().split('\t')
-  store, amount = data
+  data = line.strip()
+  paymentType= data
 
-  if store != thisKey:
-    if thisKey:
-      # output the last key value pair result
-      r.write(thisKey + '\t' + str(thisValue)+'\n')
+  if thiskey == "":
+    if paymentType:
+      thiskey = paymentType
 
-    # start over when changing keys
-    thisKey = store 
-    thisValue = 0.0
-  
   # apply the aggregation function
-  thisValue += float(amount)
+  
+  if paymentType == thiskey:
+    #thisvalue = thisvalue + float(amount)
+    counter = counter + 1
+  else:
+    r.write( thiskey + '\t' + str(counter)+'\n')
+    # start over when changing keys
+    thiskey = paymentType
+   # thisvalue = float(amount)
+    counter = 1
 
-# output the final entry when done
-r.write(thisKey + '\t' + str(thisValue)+'\n')
+  # output final entry
+
+r.write( thiskey + '\t' + str(counter)+'\n')
 
 s.close()
 r.close()
